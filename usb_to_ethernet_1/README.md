@@ -67,7 +67,7 @@ Chips:
 
 
 ![transistor](../.github/images/adapter_1/transistor.jpeg)
-- 76299 -- transistor
+- 662K -- transistor
   - [possible datasheets](https://www.alldatasheet.com/view.jsp?Searchword=76299&sField=3)
 
 
