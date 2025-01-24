@@ -47,6 +47,36 @@ Tree of unzipped files:
 └── nxnetwdm64.sys
 ```
 
+### Internals
+
+Chips:
+![flash memory](../.github/images/adapter_1/flash.jpeg)
+- MA P25Q4 202425 -- flash memory
+  - [datasheet](https://www.alldatasheet.com/datasheet-pdf/pdf/1150759/PUYA/P25Q40H.html)
+
+
+![microcontroller](../.github/images/adapter_1/microcontroller.jpeg)
+- NX7202D M3S951.00 -- micro controller
+  - Cannot locate a datasheet
+
+
+![transistor](../.github/images/adapter_1/transistor.jpeg)
+- 76299 -- transistor
+  - [possible datasheets](https://www.alldatasheet.com/view.jsp?Searchword=76299&sField=3)
+
+
+Full front:
+![front](../.github/images/adapter_1/front.png)
+
+
+Full back:
+![back](../.github/images/adapter_1/back.png)
+
+Board info:
+![board](../.github/images/adapter_1/board.jpeg)
+- JCX-013-7202 -- generic PCB board
+  - No datasheets most likely Sanyo product
+
 ### File scans
 
 `Setup.exe`:
