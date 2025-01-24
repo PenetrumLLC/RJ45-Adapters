@@ -4,6 +4,10 @@
 
 Bought on Aliexpress here: [https://www.aliexpress.us/item/3256806941075115.html?spm=a2g0o.order_list.order_list_main.5.39ca1802aVhvC9&gatewayAdapt=glo2usa](https://www.aliexpress.us/item/3256806941075115.html?spm=a2g0o.order_list.order_list_main.5.39ca1802aVhvC9&gatewayAdapt=glo2usa)
 
+### VERDICT
+
+It is not malicious. It is mostly just poor coding practices from an earlier time. It behaves the same as a lot of malware, but it has nothing overtly malicious in it.
+
 ### Basic info
 
 File contains an `AUTORUN.INF` file that attempts to take advantage of autorun on Windows. This has not worked since Windows 7 and needs to be manually enabled to run.
@@ -114,4 +118,3 @@ d04211809b1b1f4cf6965561cca6d2cd6209ca0c33bc94e755e3d17b3c8b0c76  ./Setup/nxnetw
 90ea7032f075047bdb3b43f0b82fa9e695a1b69e29a7c7027664d7432a814ad3  ./Setup/nxnetwdm64.sys
 dabd66200d76616a55757ac89fdb1b58cd236e701eb3adcc1dc3427a84f68060  ./Setup_exe.bin
 ```
-
