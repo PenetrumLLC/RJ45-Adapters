@@ -1,0 +1,258 @@
+;-------------------------------------------------------------------------------
+; NaxiangWDM.INF
+;
+; Naxiang USB Ethernet Adapter
+;
+; Copyright (c) 2023  Shenzhen Naxiang Technology Co., Ltd. All rights reserved.
+
+
+[version]
+Signature   = "$Windows NT$"
+Class       = Net
+ClassGUID   = {4d36e972-e325-11ce-bfc1-08002be10318}
+Provider    = %Msft%
+Catalogfile = nxnetwdm.cat
+Catalogfile.NTamd64 = nxnetwdm64.cat
+DriverVer   = 10/11/2023,1.0.0.4
+
+[Manufacturer]
+%ManufacturerName% = Msft,NTx86,NTamd64
+
+; For XP and later
+[Msft.NTx86]
+%NaxiangWDM.DeviceDesc%    = NaxiangWDM.ndi, USB\VID_35B5&PID_3500
+
+[Msft.NTamd64]
+%NaxiangWDM.DeviceDesc%    = NaxiangWDM.ndi.NTamd64, USB\VID_35B5&PID_3500
+
+;-------------------------------------------------------------------------------
+; Microsoft Virtual Ethernet Adapter
+;
+[NaxiangWDM.ndi.NTx86]
+*IfType            = 0x6 ; IF_TYPE_ETHERNET_CSMACD
+*MediaType         = 0x0 ; NdisMedium802_3
+*PhysicalMediaType = 14  ; 0:NdisPhysicalMediumUnspecified, 14:NdisPhysicalMedium802_3
+Characteristics = 0x84 ; NCF_PHYSICAL
+BusType			= 15 ; if you specify NCF_PHYSICAL, you must specify bustype
+AddReg          = NaxiangWDM.Reg
+CopyFiles       = NaxiangWDM.CopyFiles
+
+[NaxiangWDM.ndi.NTamd64]
+*IfType            = 0x6 ; IF_TYPE_ETHERNET_CSMACD
+*MediaType         = 0x0 ; NdisMedium802_3
+*PhysicalMediaType = 14  ; 0:NdisPhysicalMediumUnspecified, 14:NdisPhysicalMedium802_3
+Characteristics = 0x84 ; NCF_PHYSICAL
+BusType			= 15 ; if you specify NCF_PHYSICAL, you must specify bustype
+AddReg          = NaxiangWDM.Reg
+CopyFiles       = NaxiangWDM.CopyFiles64
+
+[NaxiangWDM.ndi.NTx86.Services]
+AddService      = NaxiangWDM, 2, NaxiangWDM.Service, NaxiangWDM.EventLog
+
+[NaxiangWDM.ndi.NTamd64.Services]
+AddService      = NaxiangWDM, 2, NaxiangWDM.Service64, NaxiangWDM.EventLog
+;-----------------------------------------------------------------------------
+; Microsoft Virtual Miniport Common
+;
+[NaxiangWDM.Reg]
+HKR,    ,                         BusNumber,           0, "0" 
+HKR, Ndi,                         Service,             0, "NaxiangWDM"
+HKR, Ndi\Interfaces,              UpperRange,          0, "ndis5"
+HKR, Ndi\Interfaces,              LowerRange,          0, "ethernet"
+
+; Connection Type
+HKR, Ndi\params\ConnectionType,ParamDesc, , %ConnectionType%
+HKR, Ndi\params\ConnectionType,Default,   , "0"
+HKR, Ndi\params\ConnectionType,Type,      , "enum"
+HKR, Ndi\params\ConnectionType\enum,0,     , %AutoSense%
+HKR, Ndi\params\ConnectionType\enum,1,     , %10Full%
+HKR, Ndi\params\ConnectionType\enum,2,     , %100Full%
+HKR,,ConnectionType,0,"0"
+
+; MAC address
+HKR, Ndi\params\NetworkAddress, ParamDesc, 0, %NetworkAddress.Title%
+HKR, Ndi\params\NetworkAddress, Type,      0, "edit"
+HKR, Ndi\params\NetworkAddress, LimitText, 0, "12"
+HKR, Ndi\params\NetworkAddress, UpperCase, 0, "1"
+HKR, Ndi\params\NetworkAddress, Optional,  0, "1"
+
+; Flow Control
+HKR,Ndi\params\FlowControl,ParamDesc,,%FlowControl%
+HKR,Ndi\params\FlowControl,Default,,"0"
+HKR,Ndi\params\FlowControl,Type,0,"enum"
+HKR,Ndi\params\FlowControl\enum,0,,%Disabled%
+HKR,Ndi\params\FlowControl\enum,1,,%Enabled%
+HKR,,FlowControl,0,"0"
+
+;Energy Efficient Ethernet
+;HKR, Ndi\params\*EEE,ParamDesc,	0,	%EEE%
+;HKR, Ndi\params\*EEE,Default,0,  "0"
+;HKR, Ndi\params\*EEE,Type,0, "enum"
+;HKR, Ndi\params\*EEE\enum,"0",0,  %Disabled%
+;HKR, Ndi\params\*EEE\enum,"1",0,  %Enabled%
+
+; WOL Link Speed
+HKR,Ndi\params\WolLinkSpeed,ParamDesc,,%WolLinkSpeed%
+HKR,Ndi\params\WolLinkSpeed,Default,,"0"
+HKR,Ndi\params\WolLinkSpeed,Type,0,"enum"
+HKR,Ndi\params\WolLinkSpeed\enum,0,,%10mFirst%
+HKR,Ndi\params\WolLinkSpeed\enum,1,,%100mFirst%
+HKR,,WolLinkSpeed,0,"0"
+
+; IPv4 Checksum offload
+HKR, Ndi\params\*IPChecksumOffloadIPv4,ParamDesc,,%IPChecksumOffloadIPv4%
+HKR, Ndi\params\*IPChecksumOffloadIPv4,Default,,"3"
+HKR, Ndi\params\*IPChecksumOffloadIPv4,Type,0,"enum"
+HKR, Ndi\params\*IPChecksumOffloadIPv4\enum,"0",0,%Disabled%
+HKR, Ndi\params\*IPChecksumOffloadIPv4\enum,"1",0,%TxEnabled%
+HKR, Ndi\params\*IPChecksumOffloadIPv4\enum,"2",0,%RxEnabled%
+HKR, Ndi\params\*IPChecksumOffloadIPv4\enum,"3",0,%TxRxEnabled%
+HKR,,*IPChecksumOffloadIPv4,0,"3"
+
+; TCP IPv4 Checksum offload
+HKR, Ndi\params\*TCPChecksumOffloadIPv4,ParamDesc,,%TCPChecksumOffloadIPv4%
+HKR, Ndi\params\*TCPChecksumOffloadIPv4,Default,,"3"
+HKR, Ndi\params\*TCPChecksumOffloadIPv4,Type,0,"enum"
+HKR, Ndi\params\*TCPChecksumOffloadIPv4\enum,"0",0,%Disabled%
+HKR, Ndi\params\*TCPChecksumOffloadIPv4\enum,"1",0,%TxEnabled%
+HKR, Ndi\params\*TCPChecksumOffloadIPv4\enum,"2",0,%RxEnabled%
+HKR, Ndi\params\*TCPChecksumOffloadIPv4\enum,"3",0,%TxRxEnabled%
+HKR,,*TCPChecksumOffloadIPv4,0,"3"
+
+; TCP IPv6 Checksum offload
+HKR, Ndi\params\*TCPChecksumOffloadIPv6,ParamDesc,,%TCPChecksumOffloadIPv6%
+HKR, Ndi\params\*TCPChecksumOffloadIPv6,Default,,"3"
+HKR, Ndi\params\*TCPChecksumOffloadIPv6,Type,0,"enum"
+HKR, Ndi\params\*TCPChecksumOffloadIPv6\enum,"0",0,%Disabled%
+HKR, Ndi\params\*TCPChecksumOffloadIPv6\enum,"1",0,%TxEnabled%
+HKR, Ndi\params\*TCPChecksumOffloadIPv6\enum,"2",0,%RxEnabled%
+HKR, Ndi\params\*TCPChecksumOffloadIPv6\enum,"3",0,%TxRxEnabled%
+HKR,,*TCPChecksumOffloadIPv6,0,"3"
+
+; UDP IPv4 Checksum offload
+HKR, Ndi\params\*UDPChecksumOffloadIPv4,ParamDesc,,%UDPChecksumOffloadIPv4%
+HKR, Ndi\params\*UDPChecksumOffloadIPv4,Default,,"3"
+HKR, Ndi\params\*UDPChecksumOffloadIPv4,Type,0,"enum"
+HKR, Ndi\params\*UDPChecksumOffloadIPv4\enum,"0",0,%Disabled%
+HKR, Ndi\params\*UDPChecksumOffloadIPv4\enum,"1",0,%TxEnabled%
+HKR, Ndi\params\*UDPChecksumOffloadIPv4\enum,"2",0,%RxEnabled%
+HKR, Ndi\params\*UDPChecksumOffloadIPv4\enum,"3",0,%TxRxEnabled%
+HKR,,*UDPChecksumOffloadIPv4,0,"3"
+
+; UDP IPv6 Checksum offload
+HKR, Ndi\params\*UDPChecksumOffloadIPv6,ParamDesc,,%UDPChecksumOffloadIPv6%
+HKR, Ndi\params\*UDPChecksumOffloadIPv6,Default,,"3"
+HKR, Ndi\params\*UDPChecksumOffloadIPv6,Type,0,"enum"
+HKR, Ndi\params\*UDPChecksumOffloadIPv6\enum,"0",0,%Disabled%
+HKR, Ndi\params\*UDPChecksumOffloadIPv6\enum,"1",0,%TxEnabled%
+HKR, Ndi\params\*UDPChecksumOffloadIPv6\enum,"2",0,%RxEnabled%
+HKR, Ndi\params\*UDPChecksumOffloadIPv6\enum,"3",0,%TxRxEnabled%
+HKR,,*UDPChecksumOffloadIPv6,0,"3"
+
+;TCPUDPChecksumOffloadIPv4
+;TCPUDPChecksumOffloadIPv6
+
+; VLAN ID
+HKR, Ndi\Params\VLAN_ID,  ParamDesc,  , %VLANID%
+HKR, Ndi\Params\VLAN_ID,  Type,       , "int"
+HKR, Ndi\Params\VLAN_ID,  Default,    , "0"
+HKR, Ndi\params\VLAN_ID,  min,        , "0"
+HKR, Ndi\params\VLAN_ID,  max,        , "4095"
+HKR, Ndi\params\VLAN_ID,  step,       , "1"
+HKR, Ndi\params\VLAN_ID,  UpperCase,  , "1"
+HKR, Ndi\params\VLAN_ID,  optional,   , "1"
+
+;WakeOnMagicPacket
+HKR, Ndi\params\*WakeOnMagicPacket,ParamDesc,0, %WakeOnMagicPacket%
+HKR, Ndi\params\*WakeOnMagicPacket,Default,0, "1"
+HKR, Ndi\params\*WakeOnMagicPacket,Type,0, "enum"
+HKR, Ndi\params\*WakeOnMagicPacket\enum,"0",0, %Disabled%
+HKR, Ndi\params\*WakeOnMagicPacket\enum,"1",0, %Enabled%
+HKR,,*WakeOnMagicPacket,0,"1"
+
+
+;-----------------------------------------------------------------------------
+; Driver and Service Section
+;
+[NaxiangWDM.CopyFiles]
+nxnetwdm.sys,,,2
+
+[NaxiangWDM.CopyFiles64]
+nxnetwdm64.sys,,,2
+
+[NaxiangWDM.Service]
+DisplayName     = %NaxiangWDM.Service.DispName%
+ServiceType     = 1 ;%SERVICE_KERNEL_DRIVER%
+StartType       = 3 ;%SERVICE_DEMAND_START%
+ErrorControl    = 1 ;%SERVICE_ERROR_NORMAL%
+ServiceBinary   = %12%\nxnetwdm.sys
+LoadOrderGroup  = NDIS
+AddReg          = TextModeFlags.Reg
+
+[NaxiangWDM.Service64]
+DisplayName     = %NaxiangWDM.Service.DispName%
+ServiceType     = 1 ;%SERVICE_KERNEL_DRIVER%
+StartType       = 3 ;%SERVICE_DEMAND_START%
+ErrorControl    = 1 ;%SERVICE_ERROR_NORMAL%
+ServiceBinary   = %12%\nxnetwdm64.sys
+LoadOrderGroup  = NDIS
+AddReg          = TextModeFlags.Reg
+
+[NaxiangWDM.EventLog]
+AddReg = NaxiangWDM.AddEventLog.Reg
+
+[NaxiangWDM.AddEventLog.Reg]
+HKR, , EventMessageFile, 0x00020000, "%%SystemRoot%%\System32\netevent.dll"
+HKR, , TypesSupported,   0x00010001, 7
+
+[TextModeFlags.Reg]
+HKR, , TextModeFlags,    0x00010001, 0x0001
+
+[SourceDisksNames]
+1 = %DiskId1%,,,""
+
+[SourceDisksFiles]
+nxnetwdm.sys  = 1,,
+nxnetwdm64.sys  = 1,,
+
+;-----------------------------------------------------------------------------
+; DestinationDirs
+;
+[DestinationDirs]
+NaxiangWDM.CopyFiles = 12
+NaxiangWDM.CopyFiles64 = 12
+
+;-----------------------------------------------------------------------------
+; Localizable Strings
+;
+[Strings]
+Msft                        = "Naxiang"
+ManufacturerName            = "Naxiang"
+NaxiangWDM.DeviceDesc       = "NX USB2.0 Fast Ethernet Adapter"
+NaxiangWDM.Service.DispName = "USB2.0 Fast Ethernet Adapter"
+DiskId1                  	= "USB Miniport Device Installation Disk #1"
+
+Enabled						= "Enabled"
+Disabled					= "Disabled"
+TxEnabled              		= "Tx Enabled"
+RxEnabled              		= "Rx Enabled"
+TxRxEnabled            		= "Rx & Tx Enabled"
+100mFirst              		= "100 Mbps First"
+10mFirst               		= "10 Mbps First"
+AutoSense              		= "Auto Sense"
+10Half                 		= "10BaseT Half_Duplex"
+10Full                 		= "10BaseT Full_Duplex"
+100Half                		= "100BaseTx Half_Duplex"
+100Full                		= "100BaseTx Full_Duplex"
+
+ConnectionType				= "Connection Type"
+NetworkAddress.Title		= "Network Address"
+FlowControl					= "Flow Control"
+WakeOnMagicPacket			= "Wake on Magic Packet"
+WolLinkSpeed				= "WOL Link Speed"
+IPChecksumOffloadIPv4		= "IPv4 Checksum Offload"
+TCPChecksumOffloadIPv4		= "TCP Checksum Offload (IPv4)"
+TCPChecksumOffloadIPv6		= "TCP Checksum Offload (IPv6)"
+UDPChecksumOffloadIPv4		= "UDP Checksum Offload (IPv4)"
+UDPChecksumOffloadIPv6		= "UDP Checksum Offload (IPv6)"
+VLANID						= "VLAN ID"

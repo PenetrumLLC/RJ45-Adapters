@@ -1,0 +1,4 @@
+[autorun]
+Label = NX7202
+Icon = NX7202.ico
+Open = Setup.exe
