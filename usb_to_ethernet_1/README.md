@@ -8,6 +8,8 @@ Bought on Aliexpress here: [https://www.aliexpress.us/item/3256806941075115.html
 
 It IS NOT malicious. It is mostly just poor coding practices from an earlier time. It behaves the same as a lot of malware, but it has nothing overtly malicious in it.
 
+---
+
 ### Basic info
 
 File contains an `AUTORUN.INF` file that attempts to take advantage of autorun on Windows. This has not worked since Windows 7 and needs to be manually enabled to run.
