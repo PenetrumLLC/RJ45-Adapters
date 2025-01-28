@@ -6,7 +6,7 @@ Bought on Aliexpress here: [https://www.aliexpress.us/item/3256806941075115.html
 
 ### VERDICT
 
-It IS NOT malicious. It is mostly just poor coding practices from an earlier time. It behaves the same as a lot of malware, but it has nothing overtly malicious in it.
+It IS NOT malicious. It is mostly just poor coding practices from an earlier time. It behaves similar to some malware, but it has nothing overtly malicious in it.
 
 ---
 
@@ -67,7 +67,7 @@ Chips:
 
 
 ![transistor](../.github/images/adapter_1/transistor.jpeg)
-- 76299 -- transistor
+- 662K -- transistor
   - [possible datasheets](https://www.alldatasheet.com/view.jsp?Searchword=76299&sField=3)
 
 
